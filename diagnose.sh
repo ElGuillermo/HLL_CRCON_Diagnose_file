@@ -6,9 +6,9 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
 { printf "\n\n\n# Top 20 CPU processes$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
+{ printf "\n\n\n# Git status$SEPARATOR"; git status; } >> diagnose.log
 { printf "\n\n\n# Docker version$SEPARATOR"; docker version; } >> diagnose.log
 { printf "\n\n\n# Docker Compose plugin version$SEPARATOR"; docker compose version; } >> diagnose.log
-{ printf "\n\n\n# Git status$SEPARATOR"; git status; } >> diagnose.log
 { printf "\n\n\n# Docker CRCON containers status$SEPARATOR"; docker compose ps; } >> diagnose.log
 { printf "\n\n\n# CRCON backend$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON frontend$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
