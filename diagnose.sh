@@ -1,7 +1,7 @@
 #!/bin/bash
 printf "\nGenerating the diagnose file. Please wait...\n\n"
 SEPARATOR="\n-------------------------------------------------------------------------------\n"
-{ printf "# Operating system$SEPARATOR\n"; uname -a; cat /etc/os-release; } > diagnose.log
+{ printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
 { printf "\n\n\n# Current folder$SEPARATOR"; pwd; } >> diagnose.log
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
