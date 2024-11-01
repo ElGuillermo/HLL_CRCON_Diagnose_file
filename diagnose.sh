@@ -17,16 +17,10 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "\n\n\n# CRCON postgres$SEPARATOR"; docker compose logs postgres --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON redis$SEPARATOR"; docker compose logs redis --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON supervisor$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
-{ printf "\n\n\n# File : supervisord.conf$SEPARATOR"; cat config/supervisord.conf; } >> diagnose.log
-if [ -f config/supervisord_1.conf ]; then
-    { printf "\n\n\n# File : supervisord_1.conf$SEPARATOR"; cat config/supervisord_1.conf; } >> diagnose.log
-fi
-if [ -f config/supervisord_2.conf ]; then
-    { printf "\n\n\n# File : supervisord_2.conf$SEPARATOR"; cat config/supervisord_2.conf; } >> diagnose.log
-fi
-if [ -f config/supervisord_3.conf ]; then
-    { printf "\n\n\n# File : supervisord_3.conf$SEPARATOR"; cat config/supervisord_3.conf; } >> diagnose.log
-fi
+{ printf "\n\n\n# File : config/supervisord.conf$SEPARATOR"; cat config/supervisord.conf; } >> diagnose.log
+for supervisord_file in config/supervisord_*.conf; do
+    { printf "\n\n\n# File : $supervisord_file$SEPARATOR"; cat $supervisord_file; } >> diagnose.log
+done
 { printf "\n\n\n# File : compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
 { printf "\n\n\n# File : .env$SEPARATOR"; cat .env; } >> diagnose.log
 
