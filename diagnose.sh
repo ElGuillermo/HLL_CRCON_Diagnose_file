@@ -2,10 +2,10 @@
 printf "\nGenerating the diagnose file. Please wait...\n\n"
 SEPARATOR="\n-------------------------------------------------------------------------------\n"
 { printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
-{ printf "\n\n\n# Current folder$SEPARATOR"; pwd; } >> diagnose.log
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
 { printf "\n\n\n# Top 20 CPU processes$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
+{ printf "\n\n\n# Current folder$SEPARATOR"; pwd; } >> diagnose.log
 { printf "\n\n\n# Git status$SEPARATOR"; git status; } >> diagnose.log
 { printf "\n\n\n# Docker version$SEPARATOR"; docker version; } >> diagnose.log
 { printf "\n\n\n# Docker Compose plugin version$SEPARATOR"; docker compose version; } >> diagnose.log
