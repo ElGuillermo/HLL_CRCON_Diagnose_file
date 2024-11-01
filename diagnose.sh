@@ -1,23 +1,22 @@
 #!/bin/bash
-echo " \nGenerating the diagnose file. Please wait...\n "
-SEPARATOR="-------------------------------------------------------------------------------"
-SPACER=" \n \n \n"
-{ echo "# Operating system"; echo $SEPARATOR; uname -a; cat /etc/os-release; } > diagnose.log
-{ echo $SPACER; echo "# Current folder"; echo $SEPARATOR; pwd; } >> diagnose.log
-{ echo $SPACER; echo "# Number of CPUs"; echo $SEPARATOR; nproc; } >> diagnose.log
-{ echo $SPACER; echo "# RAM"; echo $SEPARATOR; free -h; } >> diagnose.log
-{ echo $SPACER; echo "# Top 20 CPU processes"; echo $SEPARATOR; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
-{ echo $SPACER; echo "# Docker version"; echo $SEPARATOR; docker version; } >> diagnose.log
-{ echo $SPACER; echo "# Docker Compose plugin version"; echo $SEPARATOR; docker compose version; } >> diagnose.log
-{ echo $SPACER; echo "# Docker CRCON containers status"; echo $SEPARATOR; docker compose ps; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON backend"; echo $SEPARATOR; docker compose logs backend_1 --tail 200; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON frontend"; echo $SEPARATOR; docker compose logs frontend_1 --tail 200; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON maintenance"; echo $SEPARATOR; docker compose logs maintenance --tail 200; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON postgres"; echo $SEPARATOR; docker compose logs postgres --tail 200; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON redis"; echo $SEPARATOR; docker compose logs redis --tail 200; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON supervisor"; echo $SEPARATOR; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON compose.yaml"; echo $SEPARATOR; cat compose.yaml; } >> diagnose.log
-{ echo $SPACER; echo "# CRCON .env"; echo $SEPARATOR; cat .env; } >> diagnose.log
+printf "\nGenerating the diagnose file. Please wait...\n\n"
+SEPARATOR="\n-------------------------------------------------------------------------------\n"
+{ printf "# Operating system$SEPARATOR\n"; uname -a; cat /etc/os-release; } > diagnose.log
+{ printf "\n\n\n# Current folder$SEPARATOR"; pwd; } >> diagnose.log
+{ printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
+{ printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
+{ printf "\n\n\n# Top 20 CPU processes$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
+{ printf "\n\n\n# Docker version$SEPARATOR"; docker version; } >> diagnose.log
+{ printf "\n\n\n# Docker Compose plugin version$SEPARATOR"; docker compose version; } >> diagnose.log
+{ printf "\n\n\n# Docker CRCON containers status$SEPARATOR"; docker compose ps; } >> diagnose.log
+{ printf "\n\n\n# CRCON backend$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON frontend$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON maintenance$SEPARATOR"; docker compose logs maintenance --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON postgres$SEPARATOR"; docker compose logs postgres --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON redis$SEPARATOR"; docker compose logs redis --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON supervisor$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
+{ printf "\n\n\n# CRCON .env$SEPARATOR"; cat .env; } >> diagnose.log
 
 sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(HLL_DB_URL=postgresql:\/\/.*:\)\(.*\)@\([a-zA-Z0-9._-]*:[0-9]*\/.*\)/\1(redacted)@\3/' diagnose.log
