@@ -5,7 +5,7 @@ If you encounter issues using CRCON, you'll have to give technical informations 
 - Please be careful about sharing this file, as it could contain your personal passwords (RCON, CRCON database, etc).  
 The script should have (redacted) them, but... Just check OK ?
 - **NEVER share it on a public forum / Discord channel** ;
-- If you do not fully trust the person asking these informations, you can open the file with any text editor and delete the sensitive data before sharing.
+- If you do not fully trust the person asking these informations, you can open the file with any text editor and delete any sensitive data before sharing.
 
 ### Installation and use 
 - download the `diagnose.sh` file and place it in your CRCON root folder (usually `/root/hll_rcon_tool`) ;
