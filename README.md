@@ -2,7 +2,8 @@
 If you encounter issues using CRCON, you'll have to give technical informations about your installation if you want to receive some help or advice. This bash script will collect them in a single file.
 
 ### :warning: Sensitive data
-- Please be careful about sharing this file, as it contains your personal passwords (RCON, CRCON database, etc) :
+- Please be careful about sharing this file, as it could contain your personal passwords (RCON, CRCON database, etc).  
+The script should have (redacted) them, but... Just check OK ?
 - **NEVER share it on a public forum / Discord channel** ;
 - If you do not fully trust the person asking these informations, you can open the file with any text editor and delete the sensitive data before sharing.
 
