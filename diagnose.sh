@@ -22,6 +22,7 @@ SPACER=" \n \n \n"
 { echo $SPACER; echo "# CRCON compose.yaml"; echo $SEPARATOR; cat compose.yaml; } >> diagnose.log
 { echo $SPACER; echo "# CRCON .env"; echo $SEPARATOR; cat .env; } >> diagnose.log
 
+# Delete sensitive data
 sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(HLL_DB_URL=postgresql:\/\/.*:\)\(.*\)@\([a-zA-Z0-9._-]*:[0-9]*\/.*\)/\1(redacted)@\3/' diagnose.log
 sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/' diagnose.log
