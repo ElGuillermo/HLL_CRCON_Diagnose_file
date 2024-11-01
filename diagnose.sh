@@ -1,8 +1,5 @@
 #!/bin/bash
 echo " \nGenerating the diagnose file. Please wait...\n "
-# if [ -f ./diagnose.log ]; then
-#     rm ./diagnose.log
-# fi
 SEPARATOR="-------------------------------------------------------------------------------"
 SPACER=" \n \n \n"
 { echo "# Operating system"; echo $SEPARATOR; uname -a; cat /etc/os-release; } > diagnose.log
@@ -22,14 +19,13 @@ SPACER=" \n \n \n"
 { echo $SPACER; echo "# CRCON compose.yaml"; echo $SEPARATOR; cat compose.yaml; } >> diagnose.log
 { echo $SPACER; echo "# CRCON .env"; echo $SEPARATOR; cat .env; } >> diagnose.log
 
-# Delete sensitive data
-sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(HLL_DB_URL=postgresql:\/\/.*:\)\(.*\)@\([a-zA-Z0-9._-]*:[0-9]*\/.*\)/\1(redacted)@\3/' diagnose.log
-sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/' diagnose.log
-# sed -i 's/\(HLL_HOST=\).*/\1(redacted)/' diagnose.log
-sed -i 's/\(HLL_PASSWORD=\).*/\1(redacted)/' diagnose.log
-sed -i 's/\(GTX_SERVER_NAME_CHANGE_USERNAME=\).*/\1(redacted)/' diagnose.log
-sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/; s/\(RCONWEB_API_SECRET_[0-100]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(HLL_HOST=\).*/\1(redacted)/; s/\(HLL_HOST_[0-100]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(HLL_PASSWORD=\).*/\1(redacted)/; s/\(HLL_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(GTX_SERVER_NAME_CHANGE_USERNAME=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_USERNAME_[0-100]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
 
 echo "The diagnose file has been created."
 echo "You'll find it in the actual folder under the name 'diagnose.log'"
