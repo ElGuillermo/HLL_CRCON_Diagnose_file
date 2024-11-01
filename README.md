@@ -7,7 +7,7 @@ If you encounter issues using CRCON, you'll have to give technical informations 
 - If you do not fully trust the person asking these informations, you can open the file with any text editor and delete the sensitive data before sharing.
 
 ### Installation and use 
-- download and copy the `diagnose.sh` file in your CRCON root folder (usually `/root/hll_rcon_tool`) ;
+- download the `diagnose.sh` file and place it in your CRCON root folder (usually `/root/hll_rcon_tool`) ;
 - get into a terminal session using SSH and launch the script using these commands :
   ```shell
   cd /root/hll_rcon_tool
