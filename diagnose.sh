@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 printf "\nGenerating the diagnose file. Please wait...\n\n"
 SEPARATOR="\n-------------------------------------------------------------------------------\n"
 { printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
@@ -37,6 +38,7 @@ sed -i 's/\(HLL_PASSWORD=\).*/\1(redacted)/; s/\(HLL_PASSWORD_[0-100]*=\).*/\1(r
 sed -i 's/\(GTX_SERVER_NAME_CHANGE_USERNAME=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_USERNAME_[0-100]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
 
+clear
 echo "The diagnose file has been created."
 echo "You'll find it in the actual folder under the name 'diagnose.log'"
 echo " "
