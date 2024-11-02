@@ -2,6 +2,11 @@
 clear
 printf "\nGenerating the diagnose file. Please wait...\n\n"
 SEPARATOR="\n-------------------------------------------------------------------------------\n"
+if [ -e ${which docker-compose} ]
+    dockercompose="docker-compose"
+else
+    dockercompose="docker compose"
+fi
 { printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
@@ -9,14 +14,14 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "\n\n\n# Current folder$SEPARATOR"; pwd; } >> diagnose.log
 { printf "\n\n\n# Git status$SEPARATOR"; git status; } >> diagnose.log
 { printf "\n\n\n# Docker version$SEPARATOR"; docker version; } >> diagnose.log
-{ printf "\n\n\n# Docker Compose plugin version$SEPARATOR"; docker compose version; } >> diagnose.log
-{ printf "\n\n\n# Docker CRCON containers status$SEPARATOR"; docker compose ps; } >> diagnose.log
-{ printf "\n\n\n# CRCON backend$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
-{ printf "\n\n\n# CRCON frontend$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
-{ printf "\n\n\n# CRCON maintenance$SEPARATOR"; docker compose logs maintenance --tail 200; } >> diagnose.log
-{ printf "\n\n\n# CRCON postgres$SEPARATOR"; docker compose logs postgres --tail 200; } >> diagnose.log
-{ printf "\n\n\n# CRCON redis$SEPARATOR"; docker compose logs redis --tail 200; } >> diagnose.log
-{ printf "\n\n\n# CRCON supervisor$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
+{ printf "\n\n\n# Docker Compose plugin version$SEPARATOR"; $dockercompose version; } >> diagnose.log
+{ printf "\n\n\n# Docker CRCON containers status$SEPARATOR"; $dockercompose ps; } >> diagnose.log
+{ printf "\n\n\n# CRCON backend$SEPARATOR"; $dockercompose logs backend_1 --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON frontend$SEPARATOR"; $dockercompose logs frontend_1 --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON maintenance$SEPARATOR"; $dockercompose logs maintenance --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON postgres$SEPARATOR"; $dockercompose logs postgres --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON redis$SEPARATOR"; $dockercompose logs redis --tail 200; } >> diagnose.log
+{ printf "\n\n\n# CRCON supervisor$SEPARATOR"; $dockercompose logs supervisor_1 --tail 200; } >> diagnose.log
 for supervisord_file in config/supervisord*.conf; do
     { printf "\n\n\n# File : $supervisord_file$SEPARATOR"; cat $supervisord_file; } >> diagnose.log
 done
