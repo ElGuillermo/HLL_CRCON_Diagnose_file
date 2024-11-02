@@ -2,27 +2,44 @@
 clear
 printf "\nGenerating the diagnose file. Please wait...\n\n"
 SEPARATOR="\n-------------------------------------------------------------------------------\n"
+# System
 { printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
 { printf "\n\n\n# Top 20 CPU processes$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
+# CRCON files
 { printf "\n\n\n# Current folder$SEPARATOR"; pwd; } >> diagnose.log
 { printf "\n\n\n# Git status$SEPARATOR"; git status; } >> diagnose.log
+# Docker
 { printf "\n\n\n# Docker version$SEPARATOR"; docker version; } >> diagnose.log
 { printf "\n\n\n# Docker Compose plugin version$SEPARATOR"; docker compose version; } >> diagnose.log
 { printf "\n\n\n# Docker CRCON containers status$SEPARATOR"; docker compose ps; } >> diagnose.log
-{ printf "\n\n\n# CRCON backend$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
-{ printf "\n\n\n# CRCON frontend$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
+# Docker containers logs - common
 { printf "\n\n\n# CRCON maintenance$SEPARATOR"; docker compose logs maintenance --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON postgres$SEPARATOR"; docker compose logs postgres --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON redis$SEPARATOR"; docker compose logs redis --tail 200; } >> diagnose.log
-{ printf "\n\n\n# CRCON supervisor$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
+# Docker containers logs - per server
+if grep -q "^HLL_HOST=" .env && grep -q "^HLL_HOST=[^[:space:]]" .env; then
+    { printf "\n\n\n# CRCON backend_1$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
+    { printf "\n\n\n# CRCON frontend_1$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
+    { printf "\n\n\n# CRCON supervisor_1$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
+fi
+for servernumber in {2..10}; do
+    server_name="HLL_HOST_$servernumber"
+    if grep -q "^$server_name=" .env && grep -q "^$server_name=[^[:space:]]" .env; then
+        { printf "\n\n\n# CRCON backend_$servernumber$SEPARATOR"; docker compose logs backend_$servernumber --tail 200; } >> diagnose.log
+        { printf "\n\n\n# CRCON frontend_$servernumber$SEPARATOR"; docker compose logs frontend_$servernumber --tail 200; } >> diagnose.log
+        { printf "\n\n\n# CRCON supervisor_$servernumber$SEPARATOR"; docker compose logs supervisor_$servernumber --tail 200; } >> diagnose.log
+    fi
+done
+# Files
 for supervisord_file in config/supervisord*.conf; do
     { printf "\n\n\n# File : $supervisord_file$SEPARATOR"; cat $supervisord_file; } >> diagnose.log
 done
 { printf "\n\n\n# File : compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
 { printf "\n\n\n# File : .env$SEPARATOR"; cat .env; } >> diagnose.log
 
+# Delete usernames and passwords
 sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(HLL_DB_URL=postgresql:\/\/.*:\)\(.*\)@\([a-zA-Z0-9._-]*:[0-9]*\/.*\)/\1(redacted)@\3/' diagnose.log
 sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/; s/\(RCONWEB_API_SECRET_[0-9]*=\).*/\1(redacted)/' diagnose.log
@@ -40,8 +57,8 @@ echo "DO NOT share this file on a public forum/Discord channel"
 echo "--------------------------------------------------------"
 echo "as it could contain some of the passwords you have set"
 echo "(RCON password, CRCON database password, CRCON users passwords scrambler)."
-echo "They should have been (redacted), but... Just check, OK ?"
+echo "They should have been automatically (redacted), but... Just check, OK ?"
 echo " "
 echo "You can open the diagnose.log file in any text editor"
-echo "to delete any sensitive data before sharing."
+echo "to review and delete any sensitive data before sharing."
 echo " "
