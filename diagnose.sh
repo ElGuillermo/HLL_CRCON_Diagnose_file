@@ -23,13 +23,13 @@ done
 { printf "\n\n\n# File : compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
 { printf "\n\n\n# File : .env$SEPARATOR"; cat .env; } >> diagnose.log
 
-sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(HLL_DB_URL=postgresql:\/\/.*:\)\(.*\)@\([a-zA-Z0-9._-]*:[0-9]*\/.*\)/\1(redacted)@\3/' diagnose.log
-sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/; s/\(RCONWEB_API_SECRET_[0-100]*=\).*/\1(redacted)/' diagnose.log
-sed -i 's/\(HLL_HOST=\).*/\1(redacted)/; s/\(HLL_HOST_[0-100]*=\).*/\1(redacted)/' diagnose.log
-sed -i 's/\(HLL_PASSWORD=\).*/\1(redacted)/; s/\(HLL_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
-sed -i 's/\(GTX_SERVER_NAME_CHANGE_USERNAME=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_USERNAME_[0-100]*=\).*/\1(redacted)/' diagnose.log
-sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_PASSWORD_[0-100]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/; s/\(RCONWEB_API_SECRET_[0-9]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(HLL_HOST=\).*/\1(redacted)/; s/\(HLL_HOST_[0-9]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(HLL_PASSWORD=\).*/\1(redacted)/; s/\(HLL_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(GTX_SERVER_NAME_CHANGE_USERNAME=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_USERNAME_[0-9]*=\).*/\1(redacted)/' diagnose.log
+sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
 
 clear
 echo "The diagnose file has been created."
