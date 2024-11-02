@@ -19,12 +19,12 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "\n\n\n# CRCON postgres$SEPARATOR"; docker compose logs postgres --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON redis$SEPARATOR"; docker compose logs redis --tail 200; } >> diagnose.log
 # Docker containers logs - per server
-if grep -q "^HLL_HOST=" .env && grep -q "^HLL_HOST=[^[:space:]]" .env; then
+if grep -q "^HLL_HOST=" .env && grep -q "^HLL_HOST=[^![:space:]]" .env; then
     { printf "\n\n\n# CRCON backend_1$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
     { printf "\n\n\n# CRCON frontend_1$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
     { printf "\n\n\n# CRCON supervisor_1$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
 fi
-for servernumber in {2..10}; do
+for servernumber in $(seq 2 10); do
     server_name="HLL_HOST_$servernumber"
     if grep -q "^$server_name=" .env && grep -q "^$server_name=[^[:space:]]" .env; then
         { printf "\n\n\n# CRCON backend_$servernumber$SEPARATOR"; docker compose logs backend_$servernumber --tail 200; } >> diagnose.log
@@ -48,7 +48,7 @@ sed -i 's/\(HLL_PASSWORD=\).*/\1(redacted)/; s/\(HLL_PASSWORD_[0-9]*=\).*/\1(red
 sed -i 's/\(GTX_SERVER_NAME_CHANGE_USERNAME=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_USERNAME_[0-9]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
 
-clear
+# clear
 echo "The diagnose file has been created."
 echo "You'll find it in the actual folder under the name 'diagnose.log'"
 echo " "
