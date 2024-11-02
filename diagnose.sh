@@ -2,7 +2,7 @@
 clear
 printf "\nGenerating the diagnose file. Please wait...\n\n"
 SEPARATOR="\n-------------------------------------------------------------------------------\n"
-if [ -e ${which docker-compose} ]
+if command -v docker-compose &> /dev/null; then
     dockercompose="docker-compose"
 else
     dockercompose="docker compose"
