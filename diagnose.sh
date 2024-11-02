@@ -19,7 +19,7 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "\n\n\n# CRCON postgres$SEPARATOR"; docker compose logs postgres --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON redis$SEPARATOR"; docker compose logs redis --tail 200; } >> diagnose.log
 # Docker containers logs - per server
-if grep -q "^HLL_HOST=" .env && grep -q "^HLL_HOST=[^![:space:]]" .env; then
+if grep -q "^HLL_HOST=" .env && grep -q "^HLL_HOST=[^[:space:]]" .env; then
     { printf "\n\n\n# CRCON backend_1$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
     { printf "\n\n\n# CRCON frontend_1$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
     { printf "\n\n\n# CRCON supervisor_1$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
