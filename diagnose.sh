@@ -19,7 +19,7 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "\n\n\n# CRCON postgres$SEPARATOR"; docker compose logs postgres --tail 200; } >> diagnose.log
 { printf "\n\n\n# CRCON redis$SEPARATOR"; docker compose logs redis --tail 200; } >> diagnose.log
 # Docker containers logs - 1st server
-if grep -q "^HLL_HOST=" .env && grep -q "^HLL_HOST=[^[:space:]]" .env; then
+if grep -q "^HLL_HOST=[^[:space:]]" .env; then
     { printf "\n\n\n# CRCON backend_1$SEPARATOR"; docker compose logs backend_1 --tail 200; } >> diagnose.log
     { printf "\n\n\n# CRCON frontend_1$SEPARATOR"; docker compose logs frontend_1 --tail 200; } >> diagnose.log
     { printf "\n\n\n# CRCON supervisor_1$SEPARATOR"; docker compose logs supervisor_1 --tail 200; } >> diagnose.log
@@ -27,7 +27,7 @@ fi
 # Docker containers logs - servers 2 to 10
 for servernumber in $(seq 2 10); do
     server_name="HLL_HOST_$servernumber"
-    if grep -q "^$server_name=" .env && grep -q "^$server_name=[^[:space:]]" .env; then
+    if grep -q "^$server_name=[^[:space:]]" .env; then
         { printf "\n\n\n# CRCON backend_$servernumber$SEPARATOR"; docker compose logs backend_$servernumber --tail 200; } >> diagnose.log
         { printf "\n\n\n# CRCON frontend_$servernumber$SEPARATOR"; docker compose logs frontend_$servernumber --tail 200; } >> diagnose.log
         { printf "\n\n\n# CRCON supervisor_$servernumber$SEPARATOR"; docker compose logs supervisor_$servernumber --tail 200; } >> diagnose.log
