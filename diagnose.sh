@@ -6,7 +6,8 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
-{ printf "\n\n\n# Top 20 CPU processes$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
+{ printf "\n\n\n# Top 20 CPU processes (sort by live usage)$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
+{ printf "\n\n\n# Top 20 CPU processes (sort by total time)$SEPARATOR"; ps -aux --sort -time | head -n 20; } >> diagnose.log
 # CRCON files
 { printf "\n\n\n# Current folder$SEPARATOR"; pwd; } >> diagnose.log
 { printf "\n\n\n# Git status$SEPARATOR"; git status; } >> diagnose.log
@@ -40,7 +41,7 @@ done
 { printf "\n\n\n# File : compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
 { printf "\n\n\n# File : .env$SEPARATOR"; cat .env; } >> diagnose.log
 
-# Delete usernames and passwords
+# Delete usernames, passwords and IPs
 sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(HLL_DB_URL=postgresql:\/\/.*:\)\(.*\)@\([a-zA-Z0-9._-]*:[0-9]*\/.*\)/\1(redacted)@\3/' diagnose.log
 sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/; s/\(RCONWEB_API_SECRET_[0-9]*=\).*/\1(redacted)/' diagnose.log
@@ -48,6 +49,7 @@ sed -i 's/\(HLL_HOST=\).*/\1(redacted)/; s/\(HLL_HOST_[0-9]*=\).*/\1(redacted)/'
 sed -i 's/\(HLL_PASSWORD=\).*/\1(redacted)/; s/\(HLL_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(GTX_SERVER_NAME_CHANGE_USERNAME=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_USERNAME_[0-9]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_NAME_CHANGE_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
+sed -i "s/\([backend|supervisor]_[0-9]*-[0-9]*  | + '\[' \)\(.*\)\( == '' '\]'\)/\1(redacted)\3/" diagnose.log
 
 clear
 echo "The diagnose file has been created."
