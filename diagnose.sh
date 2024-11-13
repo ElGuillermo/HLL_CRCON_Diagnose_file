@@ -4,6 +4,10 @@ printf "\nGenerating the diagnose file. Please wait...\n\n"
 SEPARATOR="\n-------------------------------------------------------------------------------\n"
 # System
 { printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
+apt update > /dev/nul
+apt autoclean > /dev/nul
+apt autoremove > /dev/nul
+{ printf "\n\n\n# Upgradable packages$SEPARATOR"; apt list --upgradable; } >> diagnose.log
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
 { printf "\n\n\n# Top 20 CPU processes (sort by live usage)$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
@@ -41,7 +45,7 @@ done
 { printf "\n\n\n# File : compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
 { printf "\n\n\n# File : .env$SEPARATOR"; cat .env; } >> diagnose.log
 
-# Delete usernames, passwords and IPs
+# Delete usernames and passwords
 sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
 sed -i 's/\(HLL_DB_URL=postgresql:\/\/.*:\)\(.*\)@\([a-zA-Z0-9._-]*:[0-9]*\/.*\)/\1(redacted)@\3/' diagnose.log
 sed -i 's/\(RCONWEB_API_SECRET=\).*/\1(redacted)/; s/\(RCONWEB_API_SECRET_[0-9]*=\).*/\1(redacted)/' diagnose.log
