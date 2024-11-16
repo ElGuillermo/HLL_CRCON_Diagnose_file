@@ -6,7 +6,7 @@ SEPARATOR="\n-------------------------------------------------------------------
 { printf "# Operating system$SEPARATOR"; uname -a; cat /etc/os-release; } > diagnose.log
 apt update > /dev/nul
 apt autoclean > /dev/nul
-apt autoremove > /dev/nul
+yes | apt autoremove > /dev/nul
 { printf "\n\n\n# Upgradable packages$SEPARATOR"; apt list --upgradable; } >> diagnose.log
 { printf "\n\n\n# Number of CPUs$SEPARATOR"; nproc; } >> diagnose.log
 { printf "\n\n\n# RAM$SEPARATOR"; free -h; } >> diagnose.log
