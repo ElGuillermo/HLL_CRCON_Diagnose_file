@@ -10,9 +10,15 @@ The script should have (redacted) them, but... Just check OK ?
 - **NEVER share it on a public forum / Discord channel** ;
 - If you do not fully trust the person asking these informations, you can open the file with any text editor and delete any sensitive data before sharing (search in it for your passwords, VPS and game server IPs, etc).
 
-### Installation and use 
-- download the `diagnose.sh` file and place it in your CRCON root folder (usually `/root/hll_rcon_tool`) ;
-- get into a terminal session using SSH and launch the script using these commands :
+### Installation 
+- Log into your CRCON host machine using SSH and enter these commands (one line at at time) :
+  ```shell
+  cd /root/hll_rcon_tool
+  wget https://raw.githubusercontent.com/ElGuillermo/HLL_CRCON_Diagnose_file/refs/heads/main/diagnose.sh
+  ```
+
+### Usage
+- Log into your CRCON host machine using SSH and enter these commands (one line at at time) :
   ```shell
   cd /root/hll_rcon_tool
   sh ./diagnose.sh
