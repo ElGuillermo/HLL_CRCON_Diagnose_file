@@ -23,4 +23,4 @@ The script should have (redacted) them, but... Just check OK ?
   cd /root/hll_rcon_tool
   sh ./diagnose.sh
   ```
-- download the `diagnose.log` file that has been created to your local computer, review its content for sensitive data, then share it.
+- download the `/root/hll_rcon_tool/diagnose.log` file that has been created to your local computer, review its content for sensitive data, then share it.
