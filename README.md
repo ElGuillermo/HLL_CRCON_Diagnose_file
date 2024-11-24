@@ -10,6 +10,8 @@ The script should have (redacted) them, but... Just check OK ?
 - **NEVER share it on a public forum / Discord channel** ;
 - If you do not fully trust the person asking these informations, you can open the file with any text editor and delete any sensitive data before sharing (search in it for your passwords, VPS and game server IPs, etc).
 
+## Install
+
 > [!NOTE]
 > The shell commands given below assume your CRCON is installed in `/root/hll_rcon_tool`.  
 > You may have installed your CRCON in a different folder.  
@@ -20,7 +22,6 @@ The script should have (redacted) them, but... Just check OK ?
 >   
 > If so, you'll have to adapt the commands below accordingly.
 
-## Install
 - Log into your CRCON host machine using SSH and enter these commands (one line at at time) :
   ```shell
   cd /root/hll_rcon_tool
