@@ -1,6 +1,6 @@
 # HLL_CRCON_Diagnose_file
 If you encounter issues using Hell Let Loose (HLL) CRCON (see : https://github.com/MarechJ/hll_rcon_tool), you'll have to give technical informations about your installation if you want to receive some help or advice.
-That means you would have to enter multiple command in your VPS terminal. This can be rather long and techy.
+That means you would have to enter multiple commands in your VPS terminal. This can be rather long and techy.
 
 -> This bash script will automatically collect all the debugging infos in a single file you can share with the person who is trying to help you.
 
