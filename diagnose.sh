@@ -8,7 +8,7 @@
 #   any "hll_rcon_tool" folder on disk.
 # - If your CRCON folder name isn't 'hll_rcon_tool', you must set it here.
 # - Some Ubuntu distros disable 'root' user,
-#   you may have installed CRCON in "/home/ubuntu/hll_rcon_tool" then.
+#   your CRCON could then be found in "/home/ubuntu/hll_rcon_tool".
 # default : "/root/hll_rcon_tool"
 CRCON_folder_path=""
 
@@ -105,14 +105,14 @@ fi
 
 printf "\033[32mV Everything's fine\033[0m Let's create this diagnose file !\n\n"
 
-SEPARATOR="\n----------------------------------------\n"
+SEPARATOR="\n───────────────────────────────────────────────────────────────────────────────\n"
 
 printf "┌──────────────────────────────────────┐\n" > diagnose.log
 printf "│ System resources                     │\n" >> diagnose.log
 printf "└──────────────────────────────────────┘\n\n" >> diagnose.log
 { printf "# Number of CPU threads :$SEPARATOR"; nproc; } >> diagnose.log
-{ printf "\n\n\n# Top 20 CPU processes (sort by live usage)$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
-{ printf "\n\n\n# Top 20 CPU processes (sort by total time)$SEPARATOR"; ps -aux --sort -time | head -n 20; } >> diagnose.log
+{ printf "\n\n# Top 20 CPU processes (sort by live usage)$SEPARATOR"; ps aux --sort=-%cpu | head -n 20; } >> diagnose.log
+{ printf "\n\n# Top 20 CPU processes (sort by total time)$SEPARATOR"; ps -aux --sort -time | head -n 20; } >> diagnose.log
 { printf "\n\n# RAM :$SEPARATOR"; free -h; } >> diagnose.log
 { printf "\n\n# Disk :$SEPARATOR"; df -h; } >> diagnose.log
 
@@ -175,14 +175,14 @@ printf "\n\n┌─────────────────────�
 printf "│ config/supervisord.conf file(s)      │\n" >> diagnose.log
 printf "└──────────────────────────────────────┘\n\n" >> diagnose.log
 for supervisord_file in config/supervisord*.conf; do
-    { printf "# File : $supervisord_file$SEPARATOR"; cat $supervisord_file; } >> diagnose.log
+    { printf "# $supervisord_file$SEPARATOR"; cat $supervisord_file; } >> diagnose.log
 done
 
 printf "\n\n┌──────────────────────────────────────┐\n" >> diagnose.log
 printf "│ config files                         │\n" >> diagnose.log
 printf "└──────────────────────────────────────┘\n\n" >> diagnose.log
-{ printf "# File : compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
-{ printf "\n\n# File : .env$SEPARATOR"; cat .env; } >> diagnose.log
+{ printf "# compose.yaml$SEPARATOR"; cat compose.yaml; } >> diagnose.log
+{ printf "\n\n# .env$SEPARATOR"; cat .env; } >> diagnose.log
 
 # Delete usernames and passwords
 sed -i 's/\(HLL_DB_PASSWORD=\).*/\1(redacted)/; s/\(HLL_DB_PASSWORD_[0-9]*=\).*/\1(redacted)/' diagnose.log
@@ -195,16 +195,18 @@ sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_N
 sed -i "s/\([backend|supervisor]_[0-9]*-[0-9]*  | + '\[' \)\(.*\)\( == '' '\]'\)/\1(redacted)\3/" diagnose.log
 
 clear
-echo "The diagnose file has been created."
-echo "You'll find it in the actual folder under the name 'diagnose.log'"
-echo " "
-echo "--------------------------------------------------------"
-echo "DO NOT share this file on a public forum/Discord channel"
-echo "--------------------------------------------------------"
-echo "as it could contain some of the passwords you have set"
-echo "(RCON password, CRCON database password, CRCON users passwords scrambler)."
-echo "They should have been automatically (redacted), but... Just check, OK ?"
-echo " "
-echo "You can open the diagnose.log file in any text editor"
-echo "to review and delete any sensitive data before sharing."
-echo " "
+printf "\033[32mV\033[0m The diagnose file has been created\n\n"
+printf "\033[41;37m┌────────────────────────────────────────────────────────────┐\033[0m\n"
+printf "\033[41;37m│ NEVER share this file on a public forum or Discord channel │\033[0m\n"
+printf "\033[41;37m└────────────────────────────────────────────────────────────┘\033[0m\n"
+printf "as it could contain some of your usernames and passwords.\n"
+printf "They should have been automatically (redacted), but...\n\n"
+printf "\033[32mWhat to do\033[0m :\n"
+printf "1. Download \033[33m$crcon_dir\033[0m/\033[37mdiagnose.log\033[0m\n"
+printf "2. Open the file in any text editor\n"
+printf "3. Delete any sensitive data that could remain (use the search feature)\n"
+printf "   - game server RCON credentials (username and password)\n"
+printf "   - (GTX only) SFTP credentials (username and password)\n"
+printf "   - CRCON database credentials (password)\n"
+printf "   - CRCON 'RCONWEB_API_SECRET=' value (passwords scrambler string)\n"
+printf "4. share\n\n"
