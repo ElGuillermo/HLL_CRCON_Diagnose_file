@@ -195,6 +195,9 @@ sed -i 's/\(GTX_SERVER_NAME_CHANGE_PASSWORD=\).*/\1(redacted)/; s/\(GTX_SERVER_N
 sed -i "s/\([backend|supervisor]_[0-9]*-[0-9]*  | + '\[' \)\(.*\)\( == '' '\]'\)/\1(redacted)\3/" diagnose.log
 
 clear
+printf "┌─────────────────────────────────────────────────────────────────────────────┐\n"
+printf "│ Generate a CRCON diagnose file                                              │\n"
+printf "└─────────────────────────────────────────────────────────────────────────────┘\n\n"
 printf "\033[32mV\033[0m The diagnose file has been created\n\n"
 printf "\033[41;37m┌────────────────────────────────────────────────────────────┐\033[0m\n"
 printf "\033[41;37m│ NEVER share this file on a public forum or Discord channel │\033[0m\n"
