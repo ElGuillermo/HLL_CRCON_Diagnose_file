@@ -18,22 +18,45 @@ CRCON_folder_path=""
 is_CRCON_configured() {
   printf "%s└ \033[34m?\033[0m Testing folder : \033[33m%s\033[0m\n" "$2" "$1"
   if [ -f "$1/compose.yaml" ] && [ -f "$1/.env" ]; then
-    printf "%s  └ \033[32mV\033[0m A valid CRCON install has been found in \033[33m%s\033[0m\n" "$2" "$1"
+    printf "%s  └ \033[32mV\033[0m A configured CRCON install has been found in \033[33m%s\033[0m\n" "$2" "$1"
   else
+    missing_env=0
+    missing_compose=0
+    wrong_compose_name=0
+    deprecated_compose=0
     if [ ! -f "$1/.env" ]; then
+      missing_env=1
       printf "%s  └ \033[31mX\033[0m Missing file : '\033[37m.env\033[0m'\n" "$2"
-      printf "\n\033[32mWhat to do\033[0m :\nFollow the install procedure to create a '\033[37m.env\033[0m' file\n\n"
     fi
     if [ ! -f "$1/compose.yaml" ]; then
+      missing_compose=1
       printf "%s  └ \033[31mX\033[0m Missing file : '\033[37mcompose.yaml\033[0m'\n" "$2"
       if [ -f "$1/compose.yml" ]; then
-        printf "%s  └ \033[31m!\033[0m Deprecated file found : '\033[37mcompose.yml\033[0m'\n" "$2"
+        wrong_compose_name=1
+        printf "%s    └ \033[31m!\033[0m Wrongly named file found : '\033[37mcompose.yml\033[0m'\n" "$2"
       fi
       if [ -f "$1/docker-compose.yml" ]; then
-        printf "%s  └ \033[31m!\033[0m Deprecated file found : '\033[37mdocker-compose.yml\033[0m'\n" "$2"
+        deprecated_compose=1
+        printf "%s    └ \033[31m!\033[0m Deprecated file found : '\033[37mdocker-compose.yml\033[0m'\n" "$2"
       fi
-      printf "\n\033[32mWhat to do\033[0m :\nFollow the install procedure to create a '\033[37mcompose.yaml\033[0m' file\n\n"
     fi
+    printf "\n\033[32mWhat to do\033[0m :\n"
+    if [ $missing_env = 1 ]; then
+      printf "\n - Follow the install procedure to create a '\033[37m.env\033[0m' file\n"
+    fi
+    if [ $missing_compose = 1 ]; then
+      printf "\n - Follow the install procedure to create a '\033[37mcompose.yaml\033[0m' file\n"
+      if [ $wrong_compose_name = 1 ]; then
+        printf "\n   If your CRCON starts normally using '\033[37mcompose.yml\033[0m'\n"
+        printf "   you should rename this file using this command :\n"
+        printf "   \033[36mmv %s/compose.yml %s/compose.yaml\033[0m\n" "$1" "$1"
+      fi
+      if [ $deprecated_compose = 1 ]; then
+        printf "\n   '\033[37mdocker-compose.yml\033[0m' was used by the deprecated (jul. 2023) 'docker-compose' command\n"
+        printf "   You should delete it and use a '\033[37mcompose.yaml\033[0m' file\n"
+      fi
+    fi
+    printf "\n"
     exit
   fi
 }
@@ -52,7 +75,6 @@ if [ "$(id -u)" -ne 0 ]; then
   printf "\033[32mWhat to do\033[0m : you must elevate your permissions using 'sudo' :\n"
   printf "\033[36msudo sh ./%s\033[0m\n\n" "$this_script_name"
   exit
-# Root
 else
   printf "\033[32mV\033[0m You have 'root' permissions.\n"
 fi
